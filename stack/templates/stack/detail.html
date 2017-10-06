@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stack Overflow</title>
+  <!-- Bootstrap -->
+</head>
+
+<body>
+<h1>{{ question.question_text }}</h1>
+<form action="{% url 'stack:vote' question.id %}" method="post" >
+  {% csrf_token %}
+<ul style="width:60%">
+  {% for answer in question.answer_set.all %}
+    <li>{{ answer.answer_text }} <a style="float:right;">Votes: {{ answer.votes }}</a> </li>
+    <button name="vote" type="submit" value="{{ answer.id }}">Vote</button>
+  {% endfor %}
+</ul>
+</form>
+
+<button style="display:''" onclick="showAndHide(answerForm, this)">Add an answer</button>
+
+<form id="answerForm" style="display:none" action="{% url 'stack:answer' question.id %}" method="post">
+  {% csrf_token %}
+  <label>Write the Answer here</label>
+  <input type="textarea" name="answer" value="" />
+  <input type="submit" value="Save" />
+</form>
+
+{% load static %}
+<script src="{% static 'stack/js/script.js' %}">
+
+</script>
+
+</body>
+
+</html>
